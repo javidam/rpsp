@@ -1,0 +1,56 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class UdpCliente {
+
+public static void main(String[] args) {
+
+Socket s;
+PrintStream p;
+BufferedReader b;
+
+String host = "localhost";
+int port = 8080;
+String respuesta;
+
+
+BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+try {
+
+
+s = new Socket(host,port);
+
+
+p = new PrintStream(s.getOutputStream());
+b = new BufferedReader ( new InputStreamReader ( s.getInputStream() ) );
+
+while ( true ) {
+
+System.out.print("Mensaje a enviar: ");
+
+p.println( in.readLine() );
+
+
+respuesta = b.readLine();
+System.out.println(respuesta);
+if ( respuesta.equals("by")) {
+break;
+}
+}
+p.close();
+b.close();
+s.close();
+
+} catch (UnknownHostException e) {
+System.out.println("No puedo conectarme a " + host + ":" + port);
+} catch (IOException e) {
+System.out.println("Error de E/S en"  + host + ":" + port);
+}
+}
+}
